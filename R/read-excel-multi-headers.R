@@ -1,6 +1,5 @@
 #' Read Excel files with multiple header rows
 #'
-#' @description
 #' Imports data from modern Excel files (.xlsx, .xlsm, .xlsb), automatically
 #' handling multi-row merged headers by collapsing them into single column
 #' names. It reads the raw data using `openxlsx2` and then converts types using

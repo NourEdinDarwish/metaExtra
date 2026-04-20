@@ -8,6 +8,14 @@
 \description{
 Provides reusable utilities for meta-analysis workflows, including forest plot saving with auto-calculated dimensions, multi-header Excel importing, and Word document image insertion.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/NourEdinDarwish/metaExtra}
+  \item Report bugs at \url{https://github.com/NourEdinDarwish/metaExtra/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Nour Edin Darwish \email{nouredindarwish@gmail.com} (\href{https://orcid.org/0009-0009-5527-4539}{ORCID})
 

@@ -24,7 +24,12 @@
 #' @param ... Other arguments passed on to the graphics device function,
 #'   as specified by `device`.
 #'
-#' @return The file path (invisibly).
+#' @return A list (invisibly) with elements:
+#'   - `file`: The full file path.
+#'   - `width`: Plot width.
+#'   - `height`: Plot height.
+#'   - `units`: The units of `width` and `height`.
+#'   - `dpi`: Plot resolution.
 #'
 #' @seealso [ggplot2::ggsave()]
 #'
@@ -62,7 +67,16 @@ save_plot <- function(
     lapply(x, grid::grid.draw)
   }
 
-  invisible(filename)
+  # Convert back to user's units for the return value
+  dim_user <- from_inches(dim, units, dpi = dpi)
+
+  invisible(list(
+    file   = filename,
+    width  = dim_user[1],
+    height = dim_user[2],
+    units  = units,
+    dpi    = dpi
+  ))
 }
 
 validate_path <- function(path, filename, call = rlang::caller_env()) {

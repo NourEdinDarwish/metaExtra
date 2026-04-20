@@ -5,6 +5,7 @@
 \title{Save a forest plot with auto-calculated dimensions}
 \usage{
 forest_save(
+  x,
   ...,
   filename,
   path = NULL,
@@ -17,44 +18,49 @@ forest_save(
 )
 }
 \arguments{
-\item{...}{Arguments passed to the corresponding \code{forest} method
-(e.g., \code{\link[meta:forest.meta]{meta::forest.meta()}}).
-The first argument should be the meta-analysis object.}
+\item{x}{A \code{meta} object (e.g., from \code{\link[meta:metacont]{meta::metacont()}}, \code{\link[meta:metabin]{meta::metabin()}},
+\code{\link[meta:metagen]{meta::metagen()}}).}
+
+\item{...}{Arguments passed to the corresponding \code{forest} method (e.g.,
+\code{meta::forest.meta()}).}
 
 \item{filename}{File name to create on disk.}
 
-\item{path}{Path of the directory to save plot to: \code{path} and \code{filename} are
-combined to create the fully qualified file name.
-Defaults to the working directory.}
+\item{path}{Path of the directory to save the forest plot to: \code{path} and
+\code{filename} are combined to create the fully qualified file name. Defaults
+to the working directory.}
 
-\item{device}{Device to use.
-Can either be a device function (e.g. \link{png}), or one of \code{"eps"}, \code{"ps"},
-\code{"tex"} (pictex), \code{"pdf"}, \code{"jpeg"}, \code{"tiff"}, \code{"png"}, \code{"bmp"}, \code{"svg"}
-or \code{"wmf"} (windows only).
-If \code{NULL} (default), the device is guessed based on the \code{filename}
-extension.}
+\item{device}{Device to use. Can either be a device function (e.g. \link{png}), or
+one of \code{"eps"}, \code{"ps"}, \code{"tex"} (pictex), \code{"pdf"}, \code{"jpeg"}, \code{"tiff"},
+\code{"png"}, \code{"bmp"}, \code{"svg"} or \code{"wmf"} (windows only). If \code{NULL} (default),
+the device is guessed based on the \code{filename} extension.}
 
 \item{device_args}{A named list of additional arguments passed to the
 graphics device function (e.g., \code{list(bg = "white", pointsize = 12)}).}
 
-\item{width, height}{Plot size in units expressed by the \code{units} argument.
-Defaults to \code{.width} and \code{.height}, which are the auto-calculated
-dimensions from \code{\link[=forest_dims]{forest_dims()}}.
-You can use \code{.width} and \code{.height} in expressions
-(e.g., \code{height = .height * 1.2}).}
+\item{width, height}{Forest plot size in units expressed by the \code{units}
+argument. Defaults to \code{.width} and \code{.height}, which are the auto-calculated
+dimensions from \code{\link[=forest_dims]{forest_dims()}}. You can use \code{.width} and \code{.height} in
+expressions (e.g., \code{height = .height * 1.2}).}
 
 \item{units}{One of the following units in which the \code{width} and \code{height}
 arguments are expressed: \code{"in"}, \code{"cm"}, \code{"mm"} or \code{"px"}.}
 
-\item{dpi}{Plot resolution.}
+\item{dpi}{Forest plot resolution.}
 }
 \value{
-The file path (invisibly).
+A list (invisibly) with elements:
+\itemize{
+\item \code{file}: The full file path.
+\item \code{width}: Forest plot width.
+\item \code{height}: Forest plot height.
+\item \code{units}: The units of \code{width} and \code{height}.
+\item \code{dpi}: Forest plot resolution.
+}
 }
 \description{
-A thin wrapper around \code{\link[meta:forest.meta]{meta::forest()}} that saves the plot to a file with
-correct dimensions.
-All arguments in \code{...} are forwarded to the
+A thin wrapper around \code{meta::forest()} that saves the forest plot to a file
+with correct dimensions. All arguments in \code{...} are forwarded to the
 underlying \code{forest} method, so the transition from interactive plotting to
 file output is trivial — just add \code{filename}.
 }
@@ -62,8 +68,8 @@ file output is trivial — just add \code{filename}.
 \subsection{\code{.width} and \code{.height}}{
 
 The default dimensions are auto-calculated by \code{\link[=forest_dims]{forest_dims()}} and made
-available as \code{.width} and \code{.height}.
-You can reference these in your own expressions for \code{width} and \code{height}:
+available as \code{.width} and \code{.height}. You can reference these in your own
+expressions for \code{width} and \code{height}:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{# Auto dimensions (default)
 forest_save(m, filename = "plot.png")

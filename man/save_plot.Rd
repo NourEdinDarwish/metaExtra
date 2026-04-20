@@ -45,7 +45,14 @@ arguments are expressed: \code{"in"}, \code{"cm"}, \code{"mm"} or \code{"px"}.}
 as specified by \code{device}.}
 }
 \value{
-The file path (invisibly).
+A list (invisibly) with elements:
+\itemize{
+\item \code{file}: The full file path.
+\item \code{width}: Plot width.
+\item \code{height}: Plot height.
+\item \code{units}: The units of \code{width} and \code{height}.
+\item \code{dpi}: Plot resolution.
+}
 }
 \description{
 Adapted from \code{ggplot2::ggsave()}
