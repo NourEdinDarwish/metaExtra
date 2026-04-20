@@ -1,0 +1,99 @@
+#' Save a forest plot with auto-calculated dimensions
+#'
+#' A thin wrapper around [meta::forest()] that saves the plot to a file with
+#' correct dimensions.
+#' All arguments in `...` are forwarded to the
+#' underlying `forest` method, so the transition from interactive plotting to
+#' file output is trivial — just add `filename`.
+#'
+#' @details
+#' ## `.width` and `.height`
+#'
+#' The default dimensions are auto-calculated by [forest_dims()] and made
+#' available as `.width` and `.height`.
+#' You can reference these in your own expressions for `width` and `height`:
+#'
+#' ```r
+#' # Auto dimensions (default)
+#' forest_save(m, filename = "plot.png")
+#'
+#' # 20% taller
+#' forest_save(m, filename = "plot.png", height = .height * 1.2)
+#'
+#' # Explicit override
+#' forest_save(m, filename = "plot.png", width = 10, height = 8)
+#' ```
+#'
+#' @param ... Arguments passed to the corresponding `forest` method
+#'   (e.g., [meta::forest.meta()]).
+#'   The first argument should be the meta-analysis object.
+#' @param filename File name to create on disk.
+#' @param path Path of the directory to save plot to: `path` and `filename` are
+#'   combined to create the fully qualified file name.
+#'   Defaults to the working directory.
+#' @param device Device to use.
+#'   Can either be a device function (e.g. [png]), or one of `"eps"`, `"ps"`,
+#'   `"tex"` (pictex), `"pdf"`, `"jpeg"`, `"tiff"`, `"png"`, `"bmp"`, `"svg"`
+#'   or `"wmf"` (windows only).
+#'   If `NULL` (default), the device is guessed based on the `filename`
+#'   extension.
+#' @param device_args A named list of additional arguments passed to the
+#'   graphics device function (e.g., `list(bg = "white", pointsize = 12)`).
+#' @param width,height Plot size in units expressed by the `units` argument.
+#'   Defaults to `.width` and `.height`, which are the auto-calculated
+#'   dimensions from [forest_dims()].
+#'   You can use `.width` and `.height` in expressions
+#'   (e.g., `height = .height * 1.2`).
+#' @param units One of the following units in which the `width` and `height`
+#'   arguments are expressed: `"in"`, `"cm"`, `"mm"` or `"px"`.
+#' @param dpi Plot resolution.
+#'
+#' @return The file path (invisibly).
+#'
+#' @export
+forest_save <- function(
+  ...,
+  filename,
+  path = NULL,
+  device = NULL,
+  device_args = NULL,
+  width = .width,
+  height = .height,
+  units = c("in", "cm", "mm", "px"),
+  dpi = 300
+) {
+  # Capture width/height expressions before evaluation
+  width_expr  <- rlang::enexpr(width)
+  height_expr <- rlang::enexpr(height)
+
+  units <- match.arg(units)
+
+  # Calculate dimensions
+  dims <- forest_dims(..., units = units)
+
+  # Make .width/.height available for user expressions
+  eval_env <- list2env(
+    list(.width = dims$width, .height = dims$height),
+    parent = rlang::caller_env()
+  )
+
+  width  <- eval(width_expr, envir = eval_env)
+  height <- eval(height_expr, envir = eval_env)
+
+  checkmate::assert_list(device_args, null.ok = TRUE, .var.name = "device_args")
+
+  # Save
+  plot_fn <- function() meta::forest(...)
+
+  rlang::inject(save_plot(
+    x = plot_fn,
+    filename = filename,
+    device = device,
+    path = path,
+    width = width,
+    height = height,
+    units = units,
+    dpi = dpi,
+    !!!device_args
+  ))
+}

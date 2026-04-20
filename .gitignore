@@ -1,0 +1,7 @@
+.Rproj.user
+metaExtra.code-workspace
+.Rhistory
+.RData
+.httr-oauth
+.DS_Store
+.quarto

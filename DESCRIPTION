@@ -1,0 +1,29 @@
+Package: metaExtra
+Title: Extra Utilities for Meta-Analysis Workflows
+Version: 0.0.0.9000
+Authors@R: 
+    person("Nour Edin", "Darwish", , "nouredindarwish@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0009-0009-5527-4539"))
+Description: Provides reusable utilities for meta-analysis workflows,
+    including forest plot saving with auto-calculated dimensions,
+    multi-header Excel importing, and Word document image insertion.
+License: MIT + file LICENSE
+Imports:
+    checkmate,
+    cli,
+    dplyr,
+    grid,
+    meta,
+    officer,
+    openxlsx2,
+    purrr,
+    readr,
+    rlang,
+    tidyselect,
+    vctrs
+Suggests:
+    ragg,
+    svglite
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
