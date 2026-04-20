@@ -91,7 +91,7 @@ forest_save <- function(
   plot_fn <- function() meta::forest(x, ...)
 
   rlang::inject(save_plot(
-    x = plot_fn,
+    plot = plot_fn,
     filename = filename,
     device = device,
     path = path,

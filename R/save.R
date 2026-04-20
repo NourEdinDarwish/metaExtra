@@ -1,13 +1,12 @@
 #' Save a ggplot, grid object, or plotting function
 #'
-#' Adapted from `ggplot2::ggsave()`
-#' Internal utility to save plots to a file. It supports `ggplot` objects,
-#' `grid` graphics, and base R plots (wrapped in a function).
+#' Adapted from `ggplot2::ggsave()`.
+#' Saves plots to a file. It supports `ggplot` objects,
+#' `grid` graphics, and plotting calls wrapped in an anonymous function.
 #'
-#' @param x Plot to save.
-#'   Can be a `ggplot` object, a `grob`/`gTree`, a list of such objects,
-#'   or a **function** that produces a base R plot (e.g.,
-#'   `function() plot(1:10)`).
+#' @param plot Plot to save.
+#'   A `ggplot` object, a `grob`/`gTree`, or a plotting call wrapped in an
+#'   anonymous **function** (e.g., `function() plot(1:10)`).
 #' @param filename File name to create on disk.
 #' @param device Device to use. Can either be a device function
 #'   (e.g. [png]), or one of "eps", "ps", "tex" (pictex),
@@ -35,7 +34,7 @@
 #'
 #' @export
 save_plot <- function(
-  x,
+  plot,
   filename,
   device = NULL,
   path = NULL,
@@ -58,13 +57,13 @@ save_plot <- function(
     if (old_dev > 1) grDevices::dev.set(old_dev)
   }))
 
-  if (is.function(x)) {
-    x()
+  if (is.function(plot)) {
+    plot()
   } else {
-    if (!rlang::is_bare_list(x)) {
-      x <- list(x)
+    if (!rlang::is_bare_list(plot)) {
+      plot <- list(plot)
     }
-    lapply(x, grid::grid.draw)
+    lapply(plot, grid::grid.draw)
   }
 
   # Convert back to user's units for the return value

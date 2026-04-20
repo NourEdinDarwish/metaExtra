@@ -5,7 +5,7 @@
 \title{Save a ggplot, grid object, or plotting function}
 \usage{
 save_plot(
-  x,
+  plot,
   filename,
   device = NULL,
   path = NULL,
@@ -17,10 +17,9 @@ save_plot(
 )
 }
 \arguments{
-\item{x}{Plot to save.
-Can be a \code{ggplot} object, a \code{grob}/\code{gTree}, a list of such objects,
-or a \strong{function} that produces a base R plot (e.g.,
-\code{function() plot(1:10)}).}
+\item{plot}{Plot to save.
+A \code{ggplot} object, a \code{grob}/\code{gTree}, or a plotting call wrapped in an
+anonymous \strong{function} (e.g., \code{function() plot(1:10)}).}
 
 \item{filename}{File name to create on disk.}
 
@@ -55,9 +54,9 @@ A list (invisibly) with elements:
 }
 }
 \description{
-Adapted from \code{ggplot2::ggsave()}
-Internal utility to save plots to a file. It supports \code{ggplot} objects,
-\code{grid} graphics, and base R plots (wrapped in a function).
+Adapted from \code{ggplot2::ggsave()}.
+Saves plots to a file. It supports \code{ggplot} objects,
+\code{grid} graphics, and plotting calls wrapped in an anonymous function.
 }
 \seealso{
 \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}}

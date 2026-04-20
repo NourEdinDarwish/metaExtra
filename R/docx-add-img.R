@@ -4,8 +4,8 @@
 #' sizing, captioning, and auto-numbering. It automatically resizes the image
 #' if it exceeds the document's page margins.
 #'
-#' @param x Path to the image file.
-#' @param doc An `officer::read_docx` object.
+#' @param x An `officer::read_docx` object.
+#' @param src Path to the image file.
 #' @param width Width of the image.
 #' @param height Height of the image.
 #' @param units Unit for width/height. One of `"in"`, `"cm"`, `"mm"`, `"px"`.
@@ -16,15 +16,15 @@
 #' @param caption_pos Position of the caption relative to the image. `"above"`
 #'   or `"below"`.
 #' @param autonum An `officer::run_autonum` object for figure numbering.
-#' @param fp_t An `officer::fp_text` object for styling caption text.
-#' @param fp_p An `officer::fp_par` object for styling the paragraph.
+#' @param fp_text An `officer::fp_text` object for styling caption text.
+#' @param fp_par An `officer::fp_par` object for styling the paragraph.
 #'
 #' @return The modified `rdocx` object.
 #'
 #' @export
 docx_add_img <- function(
   x,
-  doc,
+  src,
   width,
   height,
   units = c("in", "cm", "mm", "px"),
@@ -32,14 +32,14 @@ docx_add_img <- function(
   caption = NULL,
   caption_pos = c("below", "above"),
   autonum = NULL,
-  fp_t = NULL,
-  fp_p = NULL
+  fp_text = NULL,
+  fp_par = NULL
 ) {
   # 1. Validation
   # Core Arguments
-  checkmate::assert_string(x, min.chars = 1, .var.name = "x")
-  checkmate::assert_file_exists(x, .var.name = "x")
-  checkmate::assert_class(doc, "rdocx", .var.name = "doc")
+  checkmate::assert_class(x, "rdocx", .var.name = "x")
+  checkmate::assert_string(src, min.chars = 1, .var.name = "src")
+  checkmate::assert_file_exists(src, .var.name = "src")
 
   # Dimensions & Units #nolint
   # Allow NA - will be resolved using device size or defaults (like save_plot)
@@ -71,8 +71,8 @@ docx_add_img <- function(
     null.ok = TRUE,
     .var.name = "autonum"
   )
-  checkmate::assert_class(fp_t, "fp_text", null.ok = TRUE, .var.name = "fp_t")
-  checkmate::assert_class(fp_p, "fp_par", null.ok = TRUE, .var.name = "fp_p")
+  checkmate::assert_class(fp_text, "fp_text", null.ok = TRUE, .var.name = "fp_text")
+  checkmate::assert_class(fp_par, "fp_par", null.ok = TRUE, .var.name = "fp_par")
 
   # 2. Handle NA dimensions and convert to inches (same logic as plot_dim)
   dim <- c(width, height)
@@ -91,7 +91,7 @@ docx_add_img <- function(
   height_in <- dim[2]
 
   # 3. Get document dimensions and calculate available space
-  doc_dims <- officer::docx_dim(doc)
+  doc_dims <- officer::docx_dim(x)
 
   # Available width = Page Width - Left - Right
   avail_width <- doc_dims$page[["width"]] -
@@ -119,14 +119,14 @@ docx_add_img <- function(
   # 5. Prepare Content
   # Create caption content
   caption_chunk <- if (!is.null(caption)) {
-    officer::ftext(caption, prop = fp_t)
+    officer::ftext(caption, prop = fp_text)
   } else {
     NULL
   }
 
   # Create image content
   img_chunk <- officer::external_img(
-    src = x,
+    src = src,
     width = width_in,
     height = height_in
   )
@@ -141,18 +141,18 @@ docx_add_img <- function(
   # Remove NULLs
   chunks <- purrr::compact(raw_chunks)
 
-  fpar_obj <- if (is.null(fp_p)) {
+  fpar_obj <- if (is.null(fp_par)) {
     rlang::inject(officer::fpar(!!!chunks))
   } else {
-    rlang::inject(officer::fpar(!!!chunks, fp_p = !!fp_p))
+    rlang::inject(officer::fpar(!!!chunks, fp_p = !!fp_par))
   }
 
   # 7. Add to Document
-  doc <- officer::body_add_fpar(doc, fpar_obj)
+  x <- officer::body_add_fpar(x, fpar_obj)
   # TODO want to know if I should use fpar here or make options, currently I
   # think it just use default options of word for this line which is a good
   # thing, also if add option for number of lines Add empty line for spacing
-  doc <- officer::body_add_par(doc, "")
+  x <- officer::body_add_par(x, "")
 
-  doc
+  x
 }

@@ -6,7 +6,7 @@
 \usage{
 docx_add_img(
   x,
-  doc,
+  src,
   width,
   height,
   units = c("in", "cm", "mm", "px"),
@@ -14,14 +14,14 @@ docx_add_img(
   caption = NULL,
   caption_pos = c("below", "above"),
   autonum = NULL,
-  fp_t = NULL,
-  fp_p = NULL
+  fp_text = NULL,
+  fp_par = NULL
 )
 }
 \arguments{
-\item{x}{Path to the image file.}
+\item{x}{An \code{officer::read_docx} object.}
 
-\item{doc}{An \code{officer::read_docx} object.}
+\item{src}{Path to the image file.}
 
 \item{width}{Width of the image.}
 
@@ -40,9 +40,9 @@ or \code{"below"}.}
 
 \item{autonum}{An \code{officer::run_autonum} object for figure numbering.}
 
-\item{fp_t}{An \code{officer::fp_text} object for styling caption text.}
+\item{fp_text}{An \code{officer::fp_text} object for styling caption text.}
 
-\item{fp_p}{An \code{officer::fp_par} object for styling the paragraph.}
+\item{fp_par}{An \code{officer::fp_par} object for styling the paragraph.}
 }
 \value{
 The modified \code{rdocx} object.

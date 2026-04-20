@@ -7,8 +7,8 @@
 forest_dims(x, ..., units = c("in", "cm", "mm"))
 }
 \arguments{
-\item{x}{A \code{meta} object (e.g., from \code{\link[meta:metacont]{meta::metacont()}},
-\code{\link[meta:metabin]{meta::metabin()}}, \code{\link[meta:metagen]{meta::metagen()}}).}
+\item{x}{A \code{meta} object (e.g., from \code{\link[meta:metacont]{meta::metacont()}}, \code{\link[meta:metabin]{meta::metabin()}},
+\code{\link[meta:metagen]{meta::metagen()}}).}
 
 \item{...}{Arguments passed to the corresponding \code{forest} method.}
 
@@ -25,8 +25,8 @@ including all layouts (\code{"meta"}, \code{"BMJ"}, \code{"RevMan5"}, \code{"JAM
 \code{"subgroup"}) and subgroup analyses.
 }
 \details{
-The package internally constructs a \code{\link[grid:grid.layout]{grid::grid.layout()}} with exact
-column widths (measured from text grobs) and uniform row heights. This
-function captures the rendered plot, extracts that layout, and sums its
-physical dimensions. No heuristic row counting is involved.
+The package internally constructs a \code{\link[grid:grid.layout]{grid::grid.layout()}} with exact column
+widths (measured from text grobs) and uniform row heights. This function
+captures the rendered plot, extracts that layout, and sums its physical
+dimensions. No heuristic row counting is involved.
 }
