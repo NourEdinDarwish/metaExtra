@@ -2,7 +2,7 @@
 % Please edit documentation in R/docx-add-img.R
 \name{docx_add_img}
 \alias{docx_add_img}
-\title{Add an external image to a Word document}
+\title{Add an image to a Word document}
 \usage{
 docx_add_img(
   x,
@@ -14,41 +14,44 @@ docx_add_img(
   caption = NULL,
   caption_pos = c("below", "above"),
   autonum = NULL,
-  fp_text = NULL,
-  fp_par = NULL
+  fp_t = NULL,
+  fp_p = NULL
 )
 }
 \arguments{
-\item{x}{An \code{officer::read_docx} object.}
+\item{x}{An \code{rdocx} object, created with \code{\link[officer:read_docx]{officer::read_docx()}}.}
 
 \item{src}{Path to the image file.}
 
-\item{width}{Width of the image.}
+\item{width, height}{Image size in units expressed by the \code{units} argument.}
 
-\item{height}{Height of the image.}
+\item{units}{One of the following units in which the \code{width} and \code{height}
+arguments are expressed: \code{"in"}, \code{"cm"}, \code{"mm"} or \code{"px"}. Default is
+\code{"in"}.}
 
-\item{units}{Unit for width/height. One of \code{"in"}, \code{"cm"}, \code{"mm"}, \code{"px"}.
-Default is \code{"in"}.}
+\item{dpi}{Plot resolution. Only used when \code{units = "px"}. Default is 300.}
 
-\item{dpi}{Plot resolution (dots per inch). Used only if \code{units = "px"}.
-Default is 300.}
+\item{caption}{The text to display as the image caption.}
 
-\item{caption}{The caption text (string).}
+\item{caption_pos}{Position of the caption relative to the image. One of
+\code{"below"} or \code{"above"}. Default is \code{"below"}.}
 
-\item{caption_pos}{Position of the caption relative to the image. \code{"above"}
-or \code{"below"}.}
+\item{autonum}{Auto-numbering (e.g., to automatically generate "Figure 1: "),
+created with \code{\link[officer:run_autonum]{officer::run_autonum()}}.}
 
-\item{autonum}{An \code{officer::run_autonum} object for figure numbering.}
+\item{fp_t}{Text formatting properties for the caption text, created with
+\code{\link[officer:fp_text]{officer::fp_text()}}. Note that this does not affect the styling of the
+auto-numbering (use the \code{prop} argument in \code{\link[officer:run_autonum]{officer::run_autonum()}} for
+that).}
 
-\item{fp_text}{An \code{officer::fp_text} object for styling caption text.}
-
-\item{fp_par}{An \code{officer::fp_par} object for styling the paragraph.}
+\item{fp_p}{Paragraph formatting properties applied to the entire paragraph
+(image, caption, and auto-numbering), created with \code{\link[officer:fp_par]{officer::fp_par()}}.}
 }
 \value{
 The modified \code{rdocx} object.
 }
 \description{
-Adds an external image to an \code{officer} Word document, with options for
-sizing, captioning, and auto-numbering. It automatically resizes the image
-if it exceeds the document's page margins.
+Adds an image to a Word document with optional captioning and auto-numbering.
+Images larger than the page margins are automatically scaled down to fit
+within the available page space while preserving their aspect ratio.
 }

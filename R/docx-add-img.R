@@ -1,23 +1,27 @@
-#' Add an external image to a Word document
+#' Add an image to a Word document
 #'
-#' Adds an external image to an `officer` Word document, with options for
-#' sizing, captioning, and auto-numbering. It automatically resizes the image
-#' if it exceeds the document's page margins.
+#' Adds an image to a Word document with optional captioning and auto-numbering.
+#' Images larger than the page margins are automatically scaled down to fit
+#' within the available page space while preserving their aspect ratio.
 #'
-#' @param x An `officer::read_docx` object.
+#' @param x An `rdocx` object, created with [officer::read_docx()].
 #' @param src Path to the image file.
-#' @param width Width of the image.
-#' @param height Height of the image.
-#' @param units Unit for width/height. One of `"in"`, `"cm"`, `"mm"`, `"px"`.
-#'   Default is `"in"`.
-#' @param dpi Plot resolution (dots per inch). Used only if `units = "px"`.
-#'   Default is 300.
-#' @param caption The caption text (string).
-#' @param caption_pos Position of the caption relative to the image. `"above"`
-#'   or `"below"`.
-#' @param autonum An `officer::run_autonum` object for figure numbering.
-#' @param fp_text An `officer::fp_text` object for styling caption text.
-#' @param fp_par An `officer::fp_par` object for styling the paragraph.
+#' @param width,height Image size in units expressed by the `units` argument.
+#' @param units One of the following units in which the `width` and `height`
+#'   arguments are expressed: `"in"`, `"cm"`, `"mm"` or `"px"`. Default is
+#'   `"in"`.
+#' @param dpi Plot resolution. Only used when `units = "px"`. Default is 300.
+#' @param caption The text to display as the image caption.
+#' @param caption_pos Position of the caption relative to the image. One of
+#'   `"below"` or `"above"`. Default is `"below"`.
+#' @param autonum Auto-numbering (e.g., to automatically generate "Figure 1: "),
+#'   created with [officer::run_autonum()].
+#' @param fp_t Text formatting properties for the caption text, created with
+#'   [officer::fp_text()]. Note that this does not affect the styling of the
+#'   auto-numbering (use the `prop` argument in [officer::run_autonum()] for
+#'   that).
+#' @param fp_p Paragraph formatting properties applied to the entire paragraph
+#'   (image, caption, and auto-numbering), created with [officer::fp_par()].
 #'
 #' @return The modified `rdocx` object.
 #'
@@ -32,8 +36,8 @@ docx_add_img <- function(
   caption = NULL,
   caption_pos = c("below", "above"),
   autonum = NULL,
-  fp_text = NULL,
-  fp_par = NULL
+  fp_t = NULL,
+  fp_p = NULL
 ) {
   # 1. Validation
   # Core Arguments
@@ -71,8 +75,8 @@ docx_add_img <- function(
     null.ok = TRUE,
     .var.name = "autonum"
   )
-  checkmate::assert_class(fp_text, "fp_text", null.ok = TRUE, .var.name = "fp_text")
-  checkmate::assert_class(fp_par, "fp_par", null.ok = TRUE, .var.name = "fp_par")
+  checkmate::assert_class(fp_t, "fp_text", null.ok = TRUE, .var.name = "fp_t")
+  checkmate::assert_class(fp_p, "fp_par", null.ok = TRUE, .var.name = "fp_p")
 
   # 2. Handle NA dimensions and convert to inches (same logic as plot_dim)
   dim <- c(width, height)
@@ -119,7 +123,7 @@ docx_add_img <- function(
   # 5. Prepare Content
   # Create caption content
   caption_chunk <- if (!is.null(caption)) {
-    officer::ftext(caption, prop = fp_text)
+    officer::ftext(caption, prop = fp_t)
   } else {
     NULL
   }
@@ -141,10 +145,10 @@ docx_add_img <- function(
   # Remove NULLs
   chunks <- purrr::compact(raw_chunks)
 
-  fpar_obj <- if (is.null(fp_par)) {
+  fpar_obj <- if (is.null(fp_p)) {
     rlang::inject(officer::fpar(!!!chunks))
   } else {
-    rlang::inject(officer::fpar(!!!chunks, fp_p = !!fp_par))
+    rlang::inject(officer::fpar(!!!chunks, fp_p = !!fp_p))
   }
 
   # 7. Add to Document
