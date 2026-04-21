@@ -45,11 +45,11 @@
 #'   arguments are expressed: `"in"`, `"cm"`, `"mm"` or `"px"`.
 #' @param dpi Forest plot resolution.
 #'
-#' @return A list (invisibly) with elements:
-#'   - `file`: The full file path.
+#' @return A named list (returned invisibly) with elements:
+#'   - `file`: Full file path.
 #'   - `width`: Forest plot width.
 #'   - `height`: Forest plot height.
-#'   - `units`: The units of `width` and `height`.
+#'   - `units`: Unit of `width` and `height`.
 #'   - `dpi`: Forest plot resolution.
 #'
 #' @export

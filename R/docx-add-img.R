@@ -46,19 +46,16 @@ docx_add_img <- function(
   checkmate::assert_file_exists(src, .var.name = "src")
 
   # Dimensions & Units #nolint
-  # Allow NA - will be resolved using device size or defaults (like save_plot)
   checkmate::assert_number(
     width,
     lower = 0,
     finite = TRUE,
-    na.ok = TRUE,
     .var.name = "width"
   )
   checkmate::assert_number(
     height,
     lower = 0,
     finite = TRUE,
-    na.ok = TRUE,
     .var.name = "height"
   )
   units <- rlang::arg_match0(units, c("in", "cm", "mm", "px"))
@@ -78,19 +75,8 @@ docx_add_img <- function(
   checkmate::assert_class(fp_t, "fp_text", null.ok = TRUE, .var.name = "fp_t")
   checkmate::assert_class(fp_p, "fp_par", null.ok = TRUE, .var.name = "fp_p")
 
-  # 2. Handle NA dimensions and convert to inches (same logic as plot_dim)
-  dim <- c(width, height)
-  dim <- to_inches(dim, units, dpi = dpi)
-
-  if (anyNA(dim)) {
-    if (length(grDevices::dev.list()) == 0) {
-      default_dim <- c(7, 7)
-    } else {
-      default_dim <- grDevices::dev.size()
-    }
-    dim[is.na(dim)] <- default_dim[is.na(dim)]
-  }
-
+  # 2. Convert to inches
+  dim <- to_inches(c(width, height), units, dpi = dpi)
   width_in <- dim[1]
   height_in <- dim[2]
 

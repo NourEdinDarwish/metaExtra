@@ -1,34 +1,36 @@
-#' Save a ggplot, grid object, or plotting function
+#' Save a plot to a file
 #'
-#' Adapted from `ggplot2::ggsave()`.
-#' Saves plots to a file. It supports `ggplot` objects,
-#' `grid` graphics, and plotting calls wrapped in an anonymous function.
+#' Adapted from [ggplot2::ggsave()]. A general-purpose plot-saving function that
+#' works with any R plotting system. Accepts ggplot objects, grid objects, or
+#' any plotting call wrapped in a function. Unlike [ggplot2::ggsave()], which
+#' only supports ggplot and grid objects, `save_plot()` can capture any plotting
+#' call (e.g., base R) by wrapping it in a function (e.g., `function()
+#' plot(1:10)`).
 #'
-#' @param plot Plot to save.
-#'   A `ggplot` object, a `grob`/`gTree`, or a plotting call wrapped in an
-#'   anonymous **function** (e.g., `function() plot(1:10)`).
+#' @param plot Plot to save. A ggplot object, a grid object, or any plotting
+#'   call (e.g., base R) wrapped in a function (e.g., `function() plot(1:10)`).
 #' @param filename File name to create on disk.
-#' @param device Device to use. Can either be a device function
-#'   (e.g. [png]), or one of "eps", "ps", "tex" (pictex),
-#'   "pdf", "jpeg", "tiff", "png", "bmp", "svg" or "wmf" (windows only). If
-#'   `NULL` (default), the device is guessed based on the `filename` extension.
-#' @param path Path of the directory to save plot to: `path` and `filename`
-#'   are combined to create the fully qualified file name. Defaults to the
-#'   working directory.
-#' @param width,height Plot size in units expressed by the `units` argument.
-#'   If not supplied, uses the size of the current graphics device.
+#' @param device Device to use. Can either be a device function (e.g. [png]), or
+#'   one of "eps", "ps", "tex" (pictex), "pdf", "jpeg", "tiff", "png", "bmp",
+#'   "svg" or "wmf" (windows only). If `NULL` (default), the device is guessed
+#'   based on the `filename` extension.
+#' @param path Path of the directory to save plot to: `path` and `filename` are
+#'   combined to create the fully qualified file name. Defaults to the working
+#'   directory.
+#' @param width,height Plot size in units expressed by the `units` argument. If
+#'   not supplied, uses the size of the current graphics device.
 #' @param units One of the following units in which the `width` and `height`
 #'   arguments are expressed: `"in"`, `"cm"`, `"mm"` or `"px"`.
 #' @param dpi Plot resolution.
-#' @param ... Other arguments passed on to the graphics device function,
-#'   as specified by `device`.
+#' @param ... Other arguments passed on to the graphics device function, as
+#'   specified by `device`.
 #'
-#' @return A list (invisibly) with elements:
-#'   - `file`: The full file path.
-#'   - `width`: Plot width.
-#'   - `height`: Plot height.
-#'   - `units`: The units of `width` and `height`.
-#'   - `dpi`: Plot resolution.
+#' @return A named list (returned invisibly) with elements:
+#' - `file`: Full file path.
+#' - `width`: Plot width.
+#' - `height`: Plot height.
+#' - `units`: Unit of `width` and `height`.
+#' - `dpi`: Plot resolution.
 #'
 #' @seealso [ggplot2::ggsave()]
 #'

@@ -49,12 +49,12 @@ arguments are expressed: \code{"in"}, \code{"cm"}, \code{"mm"} or \code{"px"}.}
 \item{dpi}{Forest plot resolution.}
 }
 \value{
-A list (invisibly) with elements:
+A named list (returned invisibly) with elements:
 \itemize{
-\item \code{file}: The full file path.
+\item \code{file}: Full file path.
 \item \code{width}: Forest plot width.
 \item \code{height}: Forest plot height.
-\item \code{units}: The units of \code{width} and \code{height}.
+\item \code{units}: Unit of \code{width} and \code{height}.
 \item \code{dpi}: Forest plot resolution.
 }
 }
