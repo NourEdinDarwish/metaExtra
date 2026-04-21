@@ -8,13 +8,13 @@ forest_save(
   x,
   ...,
   filename,
-  path = NULL,
   device = NULL,
-  device_args = NULL,
+  path = NULL,
   width = .width,
   height = .height,
   units = c("in", "cm", "mm", "px"),
-  dpi = 300
+  dpi = 300,
+  device_args = NULL
 )
 }
 \arguments{
@@ -26,27 +26,28 @@ forest_save(
 
 \item{filename}{File name to create on disk.}
 
+\item{device}{Device to use. Can either be a device function (e.g. \link{png}), or
+one of \code{"eps"}, \code{"ps"}, \code{"tex"} (pictex), \code{"pdf"}, \code{"jpeg"}, \code{"tiff"},
+\code{"png"}, \code{"bmp"}, \code{"svg"} or \code{"wmf"} (Windows only). If \code{NULL} (default),
+the device is guessed based on the \code{filename} extension.}
+
 \item{path}{Path of the directory to save the forest plot to: \code{path} and
 \code{filename} are combined to create the fully qualified file name. Defaults
 to the working directory.}
 
-\item{device}{Device to use. Can either be a device function (e.g. \link{png}), or
-one of \code{"eps"}, \code{"ps"}, \code{"tex"} (pictex), \code{"pdf"}, \code{"jpeg"}, \code{"tiff"},
-\code{"png"}, \code{"bmp"}, \code{"svg"} or \code{"wmf"} (windows only). If \code{NULL} (default),
-the device is guessed based on the \code{filename} extension.}
-
-\item{device_args}{A named list of additional arguments passed to the
-graphics device function (e.g., \code{list(bg = "white", pointsize = 12)}).}
-
 \item{width, height}{Forest plot size in units expressed by the \code{units}
 argument. Defaults to \code{.width} and \code{.height}, which are the auto-calculated
-dimensions from \code{\link[=forest_dims]{forest_dims()}}. You can use \code{.width} and \code{.height} in
-expressions (e.g., \code{height = .height * 1.2}).}
+dimensions from \code{\link[=forest_dims]{forest_dims()}}. If \code{NA}, uses the size of the current
+graphics device. You can use \code{.width} and \code{.height} in expressions (e.g.,
+\code{height = .height * 1.2}).}
 
 \item{units}{One of the following units in which the \code{width} and \code{height}
 arguments are expressed: \code{"in"}, \code{"cm"}, \code{"mm"} or \code{"px"}.}
 
 \item{dpi}{Forest plot resolution.}
+
+\item{device_args}{A named list of additional arguments passed to the
+graphics device function (e.g., \code{list(bg = "white", pointsize = 12)}).}
 }
 \value{
 A named list (returned invisibly) with elements:

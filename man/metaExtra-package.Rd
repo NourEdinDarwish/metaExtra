@@ -6,7 +6,7 @@
 \alias{metaExtra-package}
 \title{metaExtra: Extra Utilities for Meta-Analysis Workflows}
 \description{
-Provides reusable utilities for meta-analysis workflows, including forest plot saving with auto-calculated dimensions, multi-header Excel importing, and Word document image insertion.
+Provides reusable utilities for meta-analysis workflows, including forest plot saving with auto-calculated dimensions.
 }
 \seealso{
 Useful links:

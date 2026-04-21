@@ -5,8 +5,7 @@
 #' underlying `forest` method, so the transition from interactive plotting to
 #' file output is trivial — just add `filename`.
 #'
-#' @details
-#' ## `.width` and `.height`
+#' @details ## `.width` and `.height`
 #'
 #' The default dimensions are auto-calculated by [forest_dims()] and made
 #' available as `.width` and `.height`. You can reference these in your own
@@ -28,42 +27,43 @@
 #' @param ... Arguments passed to the corresponding `forest` method (e.g.,
 #'   `meta::forest.meta()`).
 #' @param filename File name to create on disk.
+#' @param device Device to use. Can either be a device function (e.g. [png]), or
+#'   one of `"eps"`, `"ps"`, `"tex"` (pictex), `"pdf"`, `"jpeg"`, `"tiff"`,
+#'   `"png"`, `"bmp"`, `"svg"` or `"wmf"` (Windows only). If `NULL` (default),
+#'   the device is guessed based on the `filename` extension.
 #' @param path Path of the directory to save the forest plot to: `path` and
 #'   `filename` are combined to create the fully qualified file name. Defaults
 #'   to the working directory.
-#' @param device Device to use. Can either be a device function (e.g. [png]), or
-#'   one of `"eps"`, `"ps"`, `"tex"` (pictex), `"pdf"`, `"jpeg"`, `"tiff"`,
-#'   `"png"`, `"bmp"`, `"svg"` or `"wmf"` (windows only). If `NULL` (default),
-#'   the device is guessed based on the `filename` extension.
-#' @param device_args A named list of additional arguments passed to the
-#'   graphics device function (e.g., `list(bg = "white", pointsize = 12)`).
 #' @param width,height Forest plot size in units expressed by the `units`
 #'   argument. Defaults to `.width` and `.height`, which are the auto-calculated
-#'   dimensions from [forest_dims()]. You can use `.width` and `.height` in
-#'   expressions (e.g., `height = .height * 1.2`).
+#'   dimensions from [forest_dims()]. If `NA`, uses the size of the current
+#'   graphics device. You can use `.width` and `.height` in expressions (e.g.,
+#'   `height = .height * 1.2`).
 #' @param units One of the following units in which the `width` and `height`
 #'   arguments are expressed: `"in"`, `"cm"`, `"mm"` or `"px"`.
 #' @param dpi Forest plot resolution.
+#' @param device_args A named list of additional arguments passed to the
+#'   graphics device function (e.g., `list(bg = "white", pointsize = 12)`).
 #'
 #' @return A named list (returned invisibly) with elements:
-#'   - `file`: Full file path.
-#'   - `width`: Forest plot width.
-#'   - `height`: Forest plot height.
-#'   - `units`: Unit of `width` and `height`.
-#'   - `dpi`: Forest plot resolution.
+#' * `file`: Full file path.
+#' * `width`: Forest plot width.
+#' * `height`: Forest plot height.
+#' * `units`: Unit of `width` and `height`.
+#' * `dpi`: Forest plot resolution.
 #'
 #' @export
 forest_save <- function(
   x,
   ...,
   filename,
-  path = NULL,
   device = NULL,
-  device_args = NULL,
+  path = NULL,
   width = .width,
   height = .height,
   units = c("in", "cm", "mm", "px"),
-  dpi = 300
+  dpi = 300,
+  device_args = NULL
 ) {
   units <- rlang::arg_match0(units, c("in", "cm", "mm", "px"))
 

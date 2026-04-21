@@ -1,19 +1,19 @@
 #' Save a plot to a file
 #'
 #' Adapted from [ggplot2::ggsave()]. A general-purpose plot-saving function that
-#' works with any R plotting system. Accepts ggplot objects, grid objects, or
-#' any plotting call wrapped in a function. Unlike [ggplot2::ggsave()], which
-#' only supports ggplot and grid objects, `save_plot()` can capture any plotting
-#' call (e.g., base R) by wrapping it in a function (e.g., `function()
+#' works with any R plotting system. Accepts `ggplot` objects, `grid` objects,
+#' or any plotting call wrapped in a function. Unlike [ggplot2::ggsave()], which
+#' only supports `ggplot` and `grid` objects, `save_plot()` can capture any
+#' plotting call (e.g., base R) by wrapping it in a function (e.g., `function()
 #' plot(1:10)`).
 #'
-#' @param plot Plot to save. A ggplot object, a grid object, or any plotting
+#' @param plot Plot to save. A `ggplot` object, a `grid` object, or any plotting
 #'   call (e.g., base R) wrapped in a function (e.g., `function() plot(1:10)`).
 #' @param filename File name to create on disk.
 #' @param device Device to use. Can either be a device function (e.g. [png]), or
-#'   one of "eps", "ps", "tex" (pictex), "pdf", "jpeg", "tiff", "png", "bmp",
-#'   "svg" or "wmf" (windows only). If `NULL` (default), the device is guessed
-#'   based on the `filename` extension.
+#'   one of `"eps"`, `"ps"`, `"tex"` (pictex), `"pdf"`, `"jpeg"`, `"tiff"`,
+#'   `"png"`, `"bmp"`, `"svg"` or `"wmf"` (Windows only). If `NULL` (default),
+#'   the device is guessed based on the `filename` extension.
 #' @param path Path of the directory to save plot to: `path` and `filename` are
 #'   combined to create the fully qualified file name. Defaults to the working
 #'   directory.
@@ -26,15 +26,15 @@
 #'   specified by `device`.
 #'
 #' @return A named list (returned invisibly) with elements:
-#' - `file`: Full file path.
-#' - `width`: Plot width.
-#' - `height`: Plot height.
-#' - `units`: Unit of `width` and `height`.
-#' - `dpi`: Plot resolution.
+#' * `file`: Full file path.
+#' * `width`: Plot width.
+#' * `height`: Plot height.
+#' * `units`: Unit of `width` and `height`.
+#' * `dpi`: Plot resolution.
 #'
 #' @seealso [ggplot2::ggsave()]
 #'
-#' @export
+#' @noRd
 save_plot <- function(
   plot,
   filename,
