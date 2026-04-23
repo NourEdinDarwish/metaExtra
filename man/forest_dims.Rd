@@ -37,3 +37,17 @@ height directly from its underlying structure.
 Because it mathematically measures the actual rendered components, it is
 highly robust. It works seamlessly with any forest plot configuration.
 }
+\examples{
+# Create a simple meta-analysis object
+m <- meta::metagen(
+  TE = c(0.5, 0.8, 0.3),
+  seTE = c(0.2, 0.3, 0.15),
+  studlab = c("Study A", "Study B", "Study C")
+)
+
+# Get dimensions in inches (default)
+forest_dims(m)
+
+# Get dimensions in centimetres
+forest_dims(m, units = "cm")
+}

@@ -21,6 +21,19 @@
 #' @return A named list with elements:
 #' * `width`: The width of the forest plot in the specified units.
 #' * `height`: The height of the forest plot in the specified units.
+#' @examples
+#' # Create a simple meta-analysis object
+#' m <- meta::metagen(
+#'   TE = c(0.5, 0.8, 0.3),
+#'   seTE = c(0.2, 0.3, 0.15),
+#'   studlab = c("Study A", "Study B", "Study C")
+#' )
+#'
+#' # Get dimensions in inches (default)
+#' forest_dims(m)
+#'
+#' # Get dimensions in centimetres
+#' forest_dims(m, units = "cm")
 #' @export
 forest_dims <- function(x, ..., units = c("in", "cm", "mm")) {
   units <- rlang::arg_match0(units, c("in", "cm", "mm"))

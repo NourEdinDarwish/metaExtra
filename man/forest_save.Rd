@@ -81,3 +81,22 @@ forest_save(m, filename = "plot.png", width = .width + 2, height = .height * 1.2
 forest_save(m, filename = "plot.png", width = 10, height = 8)
 }\if{html}{\out{</div>}}
 }
+\examples{
+m <- meta::metagen(
+  TE = c(0.5, 0.8, 0.3),
+  seTE = c(0.2, 0.3, 0.15),
+  studlab = c("Study A", "Study B", "Study C")
+)
+
+# Save with auto-calculated dimensions
+tmp <- tempfile(fileext = ".png")
+forest_save(m, filename = tmp)
+
+# 20\% taller than auto-calculated
+tmp2 <- tempfile(fileext = ".pdf")
+forest_save(m, filename = tmp2, height = .height * 1.2)
+
+# Explicit dimensions in centimetres
+tmp3 <- tempfile(fileext = ".png")
+forest_save(m, filename = tmp3, width = 25, height = 15, units = "cm")
+}
