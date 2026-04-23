@@ -10,9 +10,10 @@ test_that("forest_dims returns a list with width and height", {
   dims <- forest_dims(m)
 
   expect_type(dims, "list")
-  expect_named(dims, c("width", "height"))
+  expect_named(dims, c("width", "height", "units"))
   expect_gt(dims$width, 0)
   expect_gt(dims$height, 0)
+  expect_identical(dims$units, "in")
 })
 
 test_that("forest_dims returns inches by default", {
@@ -24,6 +25,9 @@ test_that("forest_dims returns inches by default", {
 
   dims_in <- forest_dims(m)
   dims_cm <- forest_dims(m, units = "cm")
+
+  expect_identical(dims_in$units, "in")
+  expect_identical(dims_cm$units, "cm")
 
   # cm values should be ~2.54x larger than inches
   expect_equal(dims_cm$width, dims_in$width * 2.54, tolerance = 0.01)
@@ -39,6 +43,9 @@ test_that("forest_dims respects units argument", {
 
   dims_cm <- forest_dims(m, units = "cm")
   dims_mm <- forest_dims(m, units = "mm")
+
+  expect_identical(dims_cm$units, "cm")
+  expect_identical(dims_mm$units, "mm")
 
   # mm values should be 10x larger than cm
   expect_equal(dims_mm$width, dims_cm$width * 10, tolerance = 0.01)
@@ -101,7 +108,7 @@ test_that("forest_dims works with NSE arguments in ...", {
   # Result should still be a valid dimensions list
   dims <- forest_dims(m, sortvar = TE)
   expect_type(dims, "list")
-  expect_named(dims, c("width", "height"))
+  expect_named(dims, c("width", "height", "units"))
   expect_gt(dims$width, 0)
   expect_gt(dims$height, 0)
 })

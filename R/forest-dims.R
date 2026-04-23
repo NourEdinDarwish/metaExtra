@@ -19,8 +19,9 @@
 #' @param units Units of the returned `width` and `height`. One of `"in"`,
 #'   `"cm"`, or `"mm"`. Defaults to `"in"`.
 #' @return A named list with elements:
-#' * `width`: The width of the forest plot in the specified units.
-#' * `height`: The height of the forest plot in the specified units.
+#' * `width`: Forest plot width.
+#' * `height`: Forest plot height.
+#' * `units`: Units of `width` and `height`.
 #' @examples
 #' # Create a simple meta-analysis object
 #' m <- meta::metagen(
@@ -85,6 +86,7 @@ forest_dims <- function(x, ..., units = c("in", "cm", "mm")) {
 
   list(
     width = width + extra_width,
-    height = height + extra_height
+    height = height + extra_height,
+    units = units
   )
 }

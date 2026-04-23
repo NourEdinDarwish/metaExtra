@@ -20,8 +20,9 @@ forest_dims(x, ..., units = c("in", "cm", "mm"))
 \value{
 A named list with elements:
 \itemize{
-\item \code{width}: The width of the forest plot in the specified units.
-\item \code{height}: The height of the forest plot in the specified units.
+\item \code{width}: Forest plot width.
+\item \code{height}: Forest plot height.
+\item \code{units}: Units of \code{width} and \code{height}.
 }
 }
 \description{
