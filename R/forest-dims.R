@@ -47,19 +47,37 @@ forest_dims <- function(x, ..., units = c("in", "cm", "mm")) {
   user_env <- rlang::caller_env()
   call_expr <- rlang::expr(meta::forest(!!x, !!!dots_exprs))
 
-  # Suppress grid.newpage hooks so that external hooks (e.g., the hook
-  # registered by R CMD check to annotate each plot page with help("topic")
-  # labels) don't inject extra viewports into the captured gTree.
-  old_hooks <- getHook("grid.newpage")
-  setHook("grid.newpage", NULL, "replace")
-  on.exit(setHook("grid.newpage", old_hooks, "replace"))
-
-  gtree <- grid::grid.grabExpr(eval(call_expr, envir = user_env))
-
-  # The main viewport's layout sits at the vpTree parent
-  layout <- gtree$childrenvp[[1]]$parent$layout
-
-  # convertWidth/convertHeight require an open graphics device
+  # convertWidth()/convertHeight() below require an open graphics device to
+  # resolve grid unit conversions, so we open a null PDF device (writes
+  # nowhere) for that purpose.
+  #
+  # Crucially, this device must be opened BEFORE grid.grabExpr(), not after.
+  # This placement is entirely unrelated to convertWidth() — it's to fix a
+  # separate bug where grid.grabExpr() creates an unwanted "Rplots.pdf" file
+  # when running tests via the RStudio "Test" button or R CMD check.
+  #
+  # Here is how that bug happens:
+  # grid.grabExpr() saves the current device at start (cd <- dev.cur()) and
+  # restores it on exit via dev.set(cd). When no device is open before the
+  # call, cd = 1 (the "null device"). grid.grabExpr() opens its own offscreen
+  # device, evaluates, grabs the display list, then on cleanup: closes the
+  # offscreen device and calls dev.set(1). At this exact moment there are ZERO
+  # open devices. Calling dev.set(1) with no devices open triggers R to
+  # automatically open a new device via getOption("device").
+  #
+  # Which device getOption("device") auto-opens depends on the environment.
+  # In an interactive RStudio console the default device is "RStudioGD" (the
+  # plot pane) — harmless, no file is written. In a non-interactive subprocess
+  # (RStudio "Test" button) the default device is pdf(), which without a file
+  # argument writes to "Rplots.pdf" — an unwanted side-effect.
+  #
+  # Opening pdf(file = NULL) here first ensures grid.grabExpr() sees
+  # dev.cur() >= 2 (our null PDF), not 1. On exit it calls dev.set(2), which
+  # harmlessly restores our null PDF instead of triggering the auto-open.
+  #
+  # Note: our own on.exit below does NOT suffer from this problem because the
+  # `if (old_dev > 1)` guard skips dev.set() when old_dev is 1 (the null
+  # device), so we never call dev.set(1) ourselves.
   old_dev <- grDevices::dev.cur()
   grDevices::pdf(file = NULL)
   on.exit(
@@ -69,6 +87,18 @@ forest_dims <- function(x, ..., units = c("in", "cm", "mm")) {
     },
     add = TRUE
   )
+
+  # Suppress grid.newpage hooks so that external hooks (e.g., the hook
+  # registered by R CMD check to annotate each plot page with help("topic")
+  # labels) don't inject extra viewports into the captured gTree.
+  old_hooks <- getHook("grid.newpage")
+  setHook("grid.newpage", NULL, "replace")
+  on.exit(setHook("grid.newpage", old_hooks, "replace"), add = TRUE)
+
+  gtree <- grid::grid.grabExpr(eval(call_expr, envir = user_env))
+
+  # The main viewport's layout sits at the vpTree parent
+  layout <- gtree$childrenvp[[1]]$parent$layout
 
   # Widths: exact per-column units, sum directly
   width <- grid::convertWidth(sum(layout$widths), grid_unit, valueOnly = TRUE)
