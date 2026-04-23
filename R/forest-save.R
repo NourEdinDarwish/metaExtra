@@ -87,15 +87,23 @@ forest_save <- function(
   width_expr <- rlang::enexpr(width)
   height_expr <- rlang::enexpr(height)
 
+  # Capture ... as unevaluated expressions so that NSE arguments (e.g.,
+  # sortvar = TE) are forwarded as-is to meta::forest().
+  dots_exprs <- rlang::enexprs(...)
+  user_env <- rlang::caller_env()
+
   # Always measure in inches (grid's natural unit), then convert to user's units
-  dims_in <- forest_dims(x, ..., units = "in")
+  dims_in <- eval(
+    rlang::expr(forest_dims(!!x, !!!dots_exprs, units = "in")),
+    envir = user_env
+  )
   .width <- from_inches(dims_in$width, units, dpi = dpi)
   .height <- from_inches(dims_in$height, units, dpi = dpi)
 
   # Make .width/.height available for user expressions
   eval_env <- list2env(
     list(.width = .width, .height = .height),
-    parent = rlang::caller_env()
+    parent = user_env
   )
 
   width <- eval(width_expr, envir = eval_env)
@@ -103,8 +111,9 @@ forest_save <- function(
 
   checkmate::assert_list(device_args, null.ok = TRUE, .var.name = "device_args")
 
-  # Save
-  plot_fn <- function() meta::forest(x, ...)
+  # Save — build a deferred call for meta::forest() to preserve NSE
+  forest_call <- rlang::expr(meta::forest(!!x, !!!dots_exprs))
+  plot_fn <- function() eval(forest_call, envir = user_env)
 
   rlang::inject(save_plot(
     plot = plot_fn,

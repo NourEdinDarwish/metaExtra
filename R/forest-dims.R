@@ -39,6 +39,13 @@ forest_dims <- function(x, ..., units = c("in", "cm", "mm")) {
   units <- rlang::arg_match0(units, c("in", "cm", "mm"))
   grid_unit <- c(`in` = "inches", cm = "cm", mm = "mm")[[units]]
 
+  # Capture ... as unevaluated expressions so that NSE arguments (e.g.,
+  # sortvar = TE) are forwarded as-is to meta::forest(), which resolves
+  # them via match.call() + catch().
+  dots_exprs <- rlang::enexprs(...)
+  user_env <- rlang::caller_env()
+  call_expr <- rlang::expr(meta::forest(!!x, !!!dots_exprs))
+
   # Suppress grid.newpage hooks so that external hooks (e.g., the hook
   # registered by R CMD check to annotate each plot page with help("topic")
   # labels) don't inject extra viewports into the captured gTree.
@@ -46,7 +53,7 @@ forest_dims <- function(x, ..., units = c("in", "cm", "mm")) {
   setHook("grid.newpage", NULL, "replace")
   on.exit(setHook("grid.newpage", old_hooks, "replace"))
 
-  gtree <- grid::grid.grabExpr(meta::forest(x, ...))
+  gtree <- grid::grid.grabExpr(eval(call_expr, envir = user_env))
 
   # The main viewport's layout sits at the vpTree parent
   layout <- gtree$childrenvp[[1]]$parent$layout

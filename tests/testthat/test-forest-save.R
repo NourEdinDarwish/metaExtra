@@ -122,3 +122,57 @@ test_that("forest_save passes ... to forest()", {
   # Different forest options should yield different file sizes or dimensions
   expect_false(identical(r1$height, r2$height))
 })
+
+test_that("forest_save works with NSE arguments in ...", {
+  m <- meta::metagen(
+    TE = c(0.5, 0.8, 0.3),
+    seTE = c(0.2, 0.3, 0.15),
+    studlab = c("Study A", "Study B", "Study C")
+  )
+
+  tmp <- tempfile(fileext = ".png")
+  on.exit(unlink(tmp))
+
+  # sortvar = TE uses NSE — should not error
+  expect_no_error(result <- forest_save(m, tmp, sortvar = TE))
+  expect_true(file.exists(tmp))
+  expect_gt(result$width, 0)
+  expect_gt(result$height, 0)
+})
+
+test_that("forest_save resolves NSE in the caller's environment", {
+  m <- meta::metagen(
+    TE = c(0.5, 0.8, 0.3),
+    seTE = c(0.2, 0.3, 0.15),
+    studlab = c("Study A", "Study B", "Study C")
+  )
+
+  # A variable defined here (test scope) should be found
+  my_order <- c(3, 1, 2)
+  tmp <- tempfile(fileext = ".png")
+  on.exit(unlink(tmp))
+  expect_no_error(forest_save(m, tmp, sortvar = my_order))
+
+  # A variable defined inside a wrapper function should also be found
+  wrapper <- function(meta_obj) {
+    local_order <- c(2, 3, 1)
+    forest_save(meta_obj, tempfile(fileext = ".png"), sortvar = local_order)
+  }
+  expect_no_error(wrapper(m))
+})
+
+test_that("forest_save does not leak internal variables into NSE scope", {
+  m <- meta::metagen(
+    TE = c(0.5, 0.8, 0.3),
+    seTE = c(0.2, 0.3, 0.15),
+    studlab = c("Study A", "Study B", "Study C")
+  )
+
+  # `dots_exprs` is a local variable inside forest_save(). If the
+  # double-eval chain accidentally searched the function's frame, this
+  # would resolve instead of erroring.
+  expect_error(
+    forest_save(m, tempfile(fileext = ".png"), sortvar = dots_exprs),
+    "not found"
+  )
+})

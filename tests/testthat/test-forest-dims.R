@@ -86,3 +86,64 @@ test_that("forest_dims restores previous graphics device", {
 
   expect_identical(old_dev, grDevices::dev.cur())
 })
+
+test_that("forest_dims works with NSE arguments in ...", {
+  m <- meta::metagen(
+    TE = c(0.5, 0.8, 0.3),
+    seTE = c(0.2, 0.3, 0.15),
+    studlab = c("Study A", "Study B", "Study C")
+  )
+
+  # sortvar = TE uses NSE — should not error
+  expect_no_error(forest_dims(m, sortvar = TE))
+  expect_no_error(forest_dims(m, sortvar = -TE))
+
+  # Result should still be a valid dimensions list
+  dims <- forest_dims(m, sortvar = TE)
+  expect_type(dims, "list")
+  expect_named(dims, c("width", "height"))
+  expect_gt(dims$width, 0)
+  expect_gt(dims$height, 0)
+})
+
+test_that("forest_dims resolves NSE in the caller's environment", {
+  m <- meta::metagen(
+    TE = c(0.5, 0.8, 0.3),
+    seTE = c(0.2, 0.3, 0.15),
+    studlab = c("Study A", "Study B", "Study C")
+  )
+
+  # A variable defined here (test scope) should be found — it does NOT
+  # exist in the meta object, so this can only work if eval starts in
+  # the user's environment
+  my_order <- c(3, 1, 2)
+  expect_no_error(forest_dims(m, sortvar = my_order))
+
+  # A variable defined inside a wrapper function should also be found
+  wrapper <- function(meta_obj) {
+    local_order <- c(2, 3, 1)
+    forest_dims(meta_obj, sortvar = local_order)
+  }
+  expect_no_error(wrapper(m))
+
+  # Prove that meta-object columns take priority: define a local `TE`
+
+  # with the WRONG length (4 values vs 3 studies). If our local `TE`
+  # leaked through, meta::forest would throw a length-mismatch error.
+  # No error proves the meta-object's `TE` (length 3) was used.
+  TE <- c(1, 2, 3, 4)
+  expect_no_error(forest_dims(m, sortvar = TE))
+})
+
+test_that("forest_dims does not leak internal variables into NSE scope", {
+  m <- meta::metagen(
+    TE = c(0.5, 0.8, 0.3),
+    seTE = c(0.2, 0.3, 0.15),
+    studlab = c("Study A", "Study B", "Study C")
+  )
+
+  # `grid_unit` exists inside forest_dims() (a local variable set to
+  # "inches"). If eval() accidentally ran in the function's frame, this
+  # would silently resolve. An error proves eval stays in the user's env.
+  expect_error(forest_dims(m, sortvar = grid_unit), "not found")
+})
