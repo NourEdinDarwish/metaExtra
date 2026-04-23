@@ -1,0 +1,31 @@
+# metaExtra
+
+metaExtra provides a collection of extra utility functions for
+meta-analysis in R, designed to complement the `meta` package. It
+currently includes:
+
+- [`forest_save()`](https://nouredindarwish.github.io/metaExtra/reference/forest_save.md)
+  saves a `meta` forest plot to disk with automatically calculated
+  optimal dimensions.
+- [`forest_dims()`](https://nouredindarwish.github.io/metaExtra/reference/forest_dims.md)
+  calculates the optimal width and height of a `meta` forest plot.
+
+## Installation
+
+You can install the development version of metaExtra from
+[GitHub](https://github.com/NourEdinDarwish/metaExtra) with:
+
+``` r
+# install.packages("pak")
+pak::pak("NourEdinDarwish/metaExtra")
+```
+
+# Package index
+
+## All functions
+
+- [`forest_dims()`](https://nouredindarwish.github.io/metaExtra/reference/forest_dims.md)
+  : Calculate forest plot dimensions
+- [`forest_save()`](https://nouredindarwish.github.io/metaExtra/reference/forest_save.md)
+  : Save a forest plot to disk
+
