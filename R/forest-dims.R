@@ -1,23 +1,26 @@
 #' Calculate forest plot dimensions
 #'
-#' Extracts the physical dimensions of a forest plot from the `meta` package
-#' from its internal grid layout. Works with any forest plot configuration
-#' including all layouts (`"meta"`, `"BMJ"`, `"RevMan5"`, `"JAMA"`,
-#' `"subgroup"`) and subgroup analyses.
+#' Extracts the exact width and height of a `meta` forest plot from its internal
+#' grid layout. This is primarily used to determine the optimal dimensions for
+#' saving the forest plot to disk.
 #'
-#' The package internally constructs a [grid::grid.layout()] with exact column
-#' widths (measured from text grobs) and uniform row heights. This function
-#' captures the rendered plot, extracts that layout, and sums its physical
-#' dimensions. No heuristic row counting is involved.
+#' Rather than using guesswork or manual row counting, `forest_dims()` captures
+#' the forest plot as a true graphics object and extracts the precise width and
+#' height directly from its underlying structure.
 #'
-#' @param x A `meta` object (e.g., from [meta::metacont()], [meta::metabin()],
-#'   [meta::metagen()]).
-#' @param ... Arguments passed to the corresponding `forest` method.
-#' @param units One of `"in"` (inches), `"cm"` (centimetres), or `"mm"`
-#'   (millimetres).
+#' Because it mathematically measures the actual rendered components, it is
+#' highly robust. It works seamlessly with any forest plot configuration.
 #'
-#' @return A list with `width` and `height` in the chosen unit.
-#'
+#' @param x An object of class `meta` (e.g., from [meta::metacont()],
+#'   [meta::metabin()], or [meta::metagen()]).
+#' @param ... Additional arguments passed on to the underlying `forest` method
+#'   (e.g., [meta::forest.meta()], [meta::forest.metabind()],
+#'   [meta::forest.metacum()], or [meta::forest.metainf()]).
+#' @param units Units of the returned `width` and `height`. One of `"in"`,
+#'   `"cm"`, or `"mm"`. Defaults to `"in"`.
+#' @return A named list with elements:
+#' * `width`: The width of the forest plot in the specified units.
+#' * `height`: The height of the forest plot in the specified units.
 #' @export
 forest_dims <- function(x, ..., units = c("in", "cm", "mm")) {
   units <- rlang::arg_match0(units, c("in", "cm", "mm"))
@@ -46,8 +49,8 @@ forest_dims <- function(x, ..., units = c("in", "cm", "mm")) {
   )
 
   # Hardcoded padding to prevent clipping of axis labels
-  extra_width <- 0.2
-  extra_height <- 0.7
+  extra_width <- from_inches(0.3, units)
+  extra_height <- from_inches(0.8, units)
 
   list(
     width = width + extra_width,

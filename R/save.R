@@ -29,7 +29,7 @@
 #' * `file`: Full file path.
 #' * `width`: Plot width.
 #' * `height`: Plot height.
-#' * `units`: Unit of `width` and `height`.
+#' * `units`: Units of `width` and `height`.
 #' * `dpi`: Plot resolution.
 #'
 #' @seealso [ggplot2::ggsave()]
@@ -47,6 +47,7 @@ save_plot <- function(
   ...
 ) {
   filename <- validate_path(path, filename)
+  units <- rlang::arg_match0(units, c("in", "cm", "mm", "px"))
 
   dev <- validate_device(device, filename, dpi = dpi)
   dim <- plot_dim(c(width, height), units = units, dpi = dpi)

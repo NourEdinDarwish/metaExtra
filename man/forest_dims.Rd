@@ -7,26 +7,33 @@
 forest_dims(x, ..., units = c("in", "cm", "mm"))
 }
 \arguments{
-\item{x}{A \code{meta} object (e.g., from \code{\link[meta:metacont]{meta::metacont()}}, \code{\link[meta:metabin]{meta::metabin()}},
-\code{\link[meta:metagen]{meta::metagen()}}).}
+\item{x}{An object of class \code{meta} (e.g., from \code{\link[meta:metacont]{meta::metacont()}},
+\code{\link[meta:metabin]{meta::metabin()}}, or \code{\link[meta:metagen]{meta::metagen()}}).}
 
-\item{...}{Arguments passed to the corresponding \code{forest} method.}
+\item{...}{Additional arguments passed on to the underlying \code{forest} method
+(e.g., \code{\link[meta:forest.meta]{meta::forest.meta()}}, \code{\link[meta:forest.metabind]{meta::forest.metabind()}},
+\code{\link[meta:forest.metacum]{meta::forest.metacum()}}, or \code{\link[meta:forest.metainf]{meta::forest.metainf()}}).}
 
-\item{units}{One of \code{"in"} (inches), \code{"cm"} (centimetres), or \code{"mm"}
-(millimetres).}
+\item{units}{Units of the returned \code{width} and \code{height}. One of \code{"in"},
+\code{"cm"}, or \code{"mm"}. Defaults to \code{"in"}.}
 }
 \value{
-A list with \code{width} and \code{height} in the chosen unit.
+A named list with elements:
+\itemize{
+\item \code{width}: The width of the forest plot in the specified units.
+\item \code{height}: The height of the forest plot in the specified units.
+}
 }
 \description{
-Extracts the physical dimensions of a forest plot from the \code{meta} package
-from its internal grid layout. Works with any forest plot configuration
-including all layouts (\code{"meta"}, \code{"BMJ"}, \code{"RevMan5"}, \code{"JAMA"},
-\code{"subgroup"}) and subgroup analyses.
+Extracts the exact width and height of a \code{meta} forest plot from its internal
+grid layout. This is primarily used to determine the optimal dimensions for
+saving the forest plot to disk.
 }
 \details{
-The package internally constructs a \code{\link[grid:grid.layout]{grid::grid.layout()}} with exact column
-widths (measured from text grobs) and uniform row heights. This function
-captures the rendered plot, extracts that layout, and sums its physical
-dimensions. No heuristic row counting is involved.
+Rather than using guesswork or manual row counting, \code{forest_dims()} captures
+the forest plot as a true graphics object and extracts the precise width and
+height directly from its underlying structure.
+
+Because it mathematically measures the actual rendered components, it is
+highly robust. It works seamlessly with any forest plot configuration.
 }
