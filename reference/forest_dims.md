@@ -38,9 +38,11 @@ forest_dims(x, ..., units = c("in", "cm", "mm"))
 
 A named list with elements:
 
-- `width`: The width of the forest plot in the specified units.
+- `width`: Forest plot width.
 
-- `height`: The height of the forest plot in the specified units.
+- `height`: Forest plot height.
+
+- `units`: Units of `width` and `height`.
 
 ## Details
 
@@ -69,6 +71,9 @@ forest_dims(m)
 #> $height
 #> [1] 3.2
 #> 
+#> $units
+#> [1] "in"
+#> 
 
 # Get dimensions in centimetres
 forest_dims(m, units = "cm")
@@ -77,5 +82,8 @@ forest_dims(m, units = "cm")
 #> 
 #> $height
 #> [1] 8.128
+#> 
+#> $units
+#> [1] "cm"
 #> 
 ```

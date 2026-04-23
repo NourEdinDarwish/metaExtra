@@ -76,8 +76,9 @@ saving the forest plot to disk.</p>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A named list with elements:</p><ul><li><p><code>width</code>: The width of the forest plot in the specified units.</p></li>
-<li><p><code>height</code>: The height of the forest plot in the specified units.</p></li>
+    <p>A named list with elements:</p><ul><li><p><code>width</code>: Forest plot width.</p></li>
+<li><p><code>height</code>: Forest plot height.</p></li>
+<li><p><code>units</code>: Units of <code>width</code> and <code>height</code>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -105,6 +106,9 @@ highly robust. It works seamlessly with any forest plot configuration.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $height</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $units</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "in"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Get dimensions in centimetres</span></span></span>
 <span class="r-in"><span><span class="fu">forest_dims</span><span class="op">(</span><span class="va">m</span>, units <span class="op">=</span> <span class="st">"cm"</span><span class="op">)</span></span></span>
@@ -113,6 +117,9 @@ highly robust. It works seamlessly with any forest plot configuration.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $height</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 8.128</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $units</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "cm"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
