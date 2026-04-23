@@ -39,17 +39,28 @@ forest_dims <- function(x, ..., units = c("in", "cm", "mm")) {
   units <- rlang::arg_match0(units, c("in", "cm", "mm"))
   grid_unit <- c(`in` = "inches", cm = "cm", mm = "mm")[[units]]
 
-  old_dev <- grDevices::dev.cur()
-  grDevices::pdf(file = NULL)
-  on.exit({
-    grDevices::dev.off()
-    if (old_dev > 1) grDevices::dev.set(old_dev)
-  })
+  # Suppress grid.newpage hooks so that external hooks (e.g., the hook
+  # registered by R CMD check to annotate each plot page with help("topic")
+  # labels) don't inject extra viewports into the captured gTree.
+  old_hooks <- getHook("grid.newpage")
+  setHook("grid.newpage", NULL, "replace")
+  on.exit(setHook("grid.newpage", old_hooks, "replace"))
 
   gtree <- grid::grid.grabExpr(meta::forest(x, ...))
 
   # The main viewport's layout sits at the vpTree parent
   layout <- gtree$childrenvp[[1]]$parent$layout
+
+  # convertWidth/convertHeight require an open graphics device
+  old_dev <- grDevices::dev.cur()
+  grDevices::pdf(file = NULL)
+  on.exit(
+    {
+      grDevices::dev.off()
+      if (old_dev > 1) grDevices::dev.set(old_dev)
+    },
+    add = TRUE
+  )
 
   # Widths: exact per-column units, sum directly
   width <- grid::convertWidth(sum(layout$widths), grid_unit, valueOnly = TRUE)
