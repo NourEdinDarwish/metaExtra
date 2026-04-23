@@ -37,7 +37,7 @@
 #' @export
 forest_dims <- function(x, ..., units = c("in", "cm", "mm")) {
   units <- rlang::arg_match0(units, c("in", "cm", "mm"))
-  grid_unit <- c(`in` = "inches", cm = "cm", mm = "mm")[units]
+  grid_unit <- c(`in` = "inches", cm = "cm", mm = "mm")[[units]]
 
   old_dev <- grDevices::dev.cur()
   grDevices::pdf(file = NULL)

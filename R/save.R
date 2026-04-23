@@ -167,11 +167,11 @@ plot_dim <- function(
 }
 
 to_inches <- function(x, units, dpi = 300) {
-  x / c(`in` = 1, cm = 2.54, mm = 2.54 * 10, px = dpi)[units]
+  x / c(`in` = 1, cm = 2.54, mm = 2.54 * 10, px = dpi)[[units]]
 }
 
 from_inches <- function(x, units, dpi = 300) {
-  x * c(`in` = 1, cm = 2.54, mm = 2.54 * 10, px = dpi)[units]
+  x * c(`in` = 1, cm = 2.54, mm = 2.54 * 10, px = dpi)[[units]]
 }
 
 validate_device <- function(

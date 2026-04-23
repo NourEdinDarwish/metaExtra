@@ -10,9 +10,13 @@ test_that("save_plot works with function plot", {
 
   expect_true(file.exists(tmp))
   expect_type(result, "list")
-  expect_equal(unname(result$width), 5)
-  expect_equal(unname(result$height), 4)
+  expect_equal(result$width, 5)
+  expect_equal(result$height, 4)
   expect_equal(result$units, "in")
+
+  # Ensure no named vectors are returned
+  expect_null(names(result$width))
+  expect_null(names(result$height))
 })
 
 test_that("save_plot works with ggplot object", {
@@ -69,8 +73,8 @@ test_that("save_plot respects units argument", {
     units = "cm"
   )
   expect_equal(result$units, "cm")
-  expect_equal(unname(result$width), 10)
-  expect_equal(unname(result$height), 10)
+  expect_equal(result$width, 10)
+  expect_equal(result$height, 10)
 })
 
 test_that("save_plot works with px units", {
@@ -85,8 +89,8 @@ test_that("save_plot works with px units", {
     dpi = 100
   )
   expect_equal(result$units, "px")
-  expect_equal(unname(result$width), 800)
-  expect_equal(unname(result$height), 600)
+  expect_equal(result$width, 800)
+  expect_equal(result$height, 600)
   expect_equal(result$dpi, 100)
 })
 

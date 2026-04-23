@@ -26,16 +26,8 @@ test_that("forest_dims returns inches by default", {
   dims_cm <- forest_dims(m, units = "cm")
 
   # cm values should be ~2.54x larger than inches
-  expect_equal(
-    unname(dims_cm$width),
-    unname(dims_in$width) * 2.54,
-    tolerance = 0.01
-  )
-  expect_equal(
-    unname(dims_cm$height),
-    unname(dims_in$height) * 2.54,
-    tolerance = 0.01
-  )
+  expect_equal(dims_cm$width, dims_in$width * 2.54, tolerance = 0.01)
+  expect_equal(dims_cm$height, dims_in$height * 2.54, tolerance = 0.01)
 })
 
 test_that("forest_dims respects units argument", {
@@ -49,16 +41,8 @@ test_that("forest_dims respects units argument", {
   dims_mm <- forest_dims(m, units = "mm")
 
   # mm values should be 10x larger than cm
-  expect_equal(
-    unname(dims_mm$width),
-    unname(dims_cm$width) * 10,
-    tolerance = 0.01
-  )
-  expect_equal(
-    unname(dims_mm$height),
-    unname(dims_cm$height) * 10,
-    tolerance = 0.01
-  )
+  expect_equal(dims_mm$width, dims_cm$width * 10, tolerance = 0.01)
+  expect_equal(dims_mm$height, dims_cm$height * 10, tolerance = 0.01)
 })
 
 test_that("forest_dims errors on invalid units", {
