@@ -12,6 +12,7 @@ Provides extra utility functions to complement the 'meta' package. Includes func
 Useful links:
 \itemize{
   \item \url{https://github.com/NourEdinDarwish/metaExtra}
+  \item \url{https://nouredindarwish.github.io/metaExtra/}
   \item Report bugs at \url{https://github.com/NourEdinDarwish/metaExtra/issues}
 }
 

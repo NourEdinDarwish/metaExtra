@@ -4,3 +4,7 @@ metaExtra.code-workspace
 ^metaExtra\.code-workspace$
 ^LICENSE\.md$
 ^README\.Rmd$
+^\.github$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

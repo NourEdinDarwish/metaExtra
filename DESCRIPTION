@@ -8,7 +8,8 @@ Description: Provides extra utility functions to complement the 'meta'
     package.  Includes functions for automatically calculating optimal
     dimensions and saving forest plots to disk.
 License: MIT + file LICENSE
-URL: https://github.com/NourEdinDarwish/metaExtra
+URL: https://github.com/NourEdinDarwish/metaExtra,
+    https://nouredindarwish.github.io/metaExtra/
 BugReports: https://github.com/NourEdinDarwish/metaExtra/issues
 Imports:
     checkmate,
