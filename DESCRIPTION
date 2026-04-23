@@ -1,11 +1,12 @@
 Package: metaExtra
-Title: Extra Utilities for Meta-Analysis Workflows
-Version: 0.0.0.9000
+Title: Extra Utility Functions for Meta-Analysis
+Version: 0.1.0
 Authors@R: 
     person("Nour Edin", "Darwish", , "nouredindarwish@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0009-5527-4539"))
-Description: Provides reusable utilities for meta-analysis workflows,
-    including forest plot saving with auto-calculated dimensions.
+Description: Provides extra utility functions to complement the 'meta'
+    package.  Includes functions for automatically calculating optimal
+    dimensions and saving forest plots to disk.
 License: MIT + file LICENSE
 URL: https://github.com/NourEdinDarwish/metaExtra
 BugReports: https://github.com/NourEdinDarwish/metaExtra/issues

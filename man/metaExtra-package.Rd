@@ -4,9 +4,9 @@
 \name{metaExtra-package}
 \alias{metaExtra}
 \alias{metaExtra-package}
-\title{metaExtra: Extra Utilities for Meta-Analysis Workflows}
+\title{metaExtra: Extra Utility Functions for Meta-Analysis}
 \description{
-Provides reusable utilities for meta-analysis workflows, including forest plot saving with auto-calculated dimensions.
+Provides extra utility functions to complement the 'meta' package. Includes functions for automatically calculating optimal dimensions and saving forest plots to disk.
 }
 \seealso{
 Useful links:
