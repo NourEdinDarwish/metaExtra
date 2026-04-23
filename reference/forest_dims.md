@@ -64,22 +64,18 @@ m <- meta::metagen(
 # Get dimensions in inches (default)
 forest_dims(m)
 #> $width
-#>       in 
-#> 8.768552 
+#> [1] 8.768552
 #> 
 #> $height
-#>  in 
-#> 3.2 
+#> [1] 3.2
 #> 
 
 # Get dimensions in centimetres
 forest_dims(m, units = "cm")
 #> $width
-#>       cm 
-#> 22.27212 
+#> [1] 22.27212
 #> 
 #> $height
-#>    cm 
-#> 8.128 
+#> [1] 8.128
 #> 
 ```
