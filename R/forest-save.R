@@ -94,7 +94,7 @@ forest_save <- function(
 
   # Always measure in inches (grid's natural unit), then convert to user's units
   dims_in <- eval(
-    rlang::expr(forest_dims(!!x, !!!dots_exprs, units = "in")),
+    rlang::expr(metaExtra::forest_dims(!!x, !!!dots_exprs, units = "in")),
     envir = user_env
   )
   .width <- from_inches(dims_in$width, units, dpi = dpi)
