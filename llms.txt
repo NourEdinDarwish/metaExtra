@@ -16,6 +16,7 @@ You can install the development version of metaExtra from
 [GitHub](https://github.com/NourEdinDarwish/metaExtra) with:
 
 ``` r
+
 # install.packages("pak")
 pak::pak("NourEdinDarwish/metaExtra")
 ```

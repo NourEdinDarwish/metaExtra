@@ -18,3 +18,8 @@ Useful links:
 
 **Maintainer**: Nour Edin Darwish <nouredindarwish@gmail.com>
 ([ORCID](https://orcid.org/0009-0009-5527-4539))
+
+Authors:
+
+- Nour Edin Darwish <nouredindarwish@gmail.com>
+  ([ORCID](https://orcid.org/0009-0009-5527-4539))
