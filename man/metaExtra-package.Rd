@@ -20,5 +20,10 @@ Useful links:
 \author{
 \strong{Maintainer}: Nour Edin Darwish \email{nouredindarwish@gmail.com} (\href{https://orcid.org/0009-0009-5527-4539}{ORCID})
 
+Authors:
+\itemize{
+  \item Nour Edin Darwish \email{nouredindarwish@gmail.com} (\href{https://orcid.org/0009-0009-5527-4539}{ORCID})
+}
+
 }
 \keyword{internal}

@@ -151,7 +151,7 @@ test_that("plot_dim uses current device size", {
   tmp <- tempfile(fileext = ".png")
   on.exit(unlink(tmp))
   grDevices::png(tmp, width = 10, height = 10, units = "in", res = 300)
-  on.exit(capture.output(grDevices::dev.off()), add = TRUE)
+  on.exit(grDevices::dev.off(), add = TRUE)
 
   expect_message(out <- plot_dim(), "10 x 10")
   expect_equal(out, c(10, 10))

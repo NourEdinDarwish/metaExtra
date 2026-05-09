@@ -54,11 +54,11 @@ save_plot <- function(
 
   old_dev <- grDevices::dev.cur()
   dev(filename = filename, width = dim[1], height = dim[2], ...)
-  on.exit(utils::capture.output({
+  on.exit({
     grDevices::dev.off()
     # restore old device unless null device
     if (old_dev > 1) grDevices::dev.set(old_dev)
-  }))
+  }, add = TRUE)
 
   if (is.function(plot)) {
     plot()
